@@ -1,5 +1,6 @@
 import { User } from "../models/userSchema.js";
 import bcrypt from "bcrypt";
+import { successResponse } from "../responseHandlers/successResponse.js";
 
 const signup = async (req, res) => {
   try {
@@ -10,20 +11,19 @@ const signup = async (req, res) => {
     bcrypt.hash(password, 12, async function (err, hash) {
       console.log("password hash ==>", hash);
 
-      await User.create({
+      const signedUser = await User.create({
         ...req.body,
         password: hash,
       });
 
-      res.status(200).json({
-        status: true,
-        message: "User signed up successfully!",
-      });
+     successResponse(res, 200, true, "User signed up successfully!", signedUser)
+
     });
+
   } catch (error) {
-    res.json({
+    res.status(404).json({
       status: false,
-      message: error.message,
+      message: error.message
     });
   }
 };
