@@ -3,4 +3,4 @@ import getUser from '../controllers/userController.js';
 
 export const userRoutes = express.Router();
 
-userRoutes.get("/user", getUser);
+userRoutes.get("/", getUser);
